@@ -4477,7 +4477,11 @@ public class ItemMap implements Cloneable {
                 }
                 ReflectionUtils.getMethod(tag.getClass(), MinecraftMethod.setInt.getMethod(), String.class, int.class).invoke(tag, "Unbreakable", 1);
                 ReflectionUtils.getMethod(nms.getClass(), MinecraftMethod.setTag.getMethod(), tag.getClass()).invoke(nms, tag);
-                final ItemStack item = (ItemStack) ReflectionUtils.getMethod(craftItemStack, "asCraftMirror", nms.getClass()).invoke(null, nms);
+                final ItemStack item = (ItemStack) ReflectionUtils.getMethod(
+                    craftItemStack,
+                    ServerUtils.hasUpdate("26_3") ? "asBukkitMirror" : "asCraftMirror",
+                    nms.getClass()
+                ).invoke(null, nms);
                 this.tempItem = item != null ? item : this.tempItem.clone();
             } catch (Exception e) {
                 ServerUtils.sendDebugTrace(e);
@@ -4734,7 +4738,11 @@ public class ItemMap implements Cloneable {
         }
         ReflectionUtils.getMethod(tag.getClass(), MinecraftMethod.set.getMethod(), String.class, baseClass).invoke(tag, "pages", pages);
         ReflectionUtils.getMethod(nms.getClass(), MinecraftMethod.setTag.getMethod(), tag.getClass()).invoke(nms, tag);
-        return ((ItemStack) ReflectionUtils.getMethod(craftItemStack, "asCraftMirror", nms.getClass()).invoke(null, nms));
+        return ((ItemStack) ReflectionUtils.getMethod(
+            craftItemStack,
+            ServerUtils.hasUpdate("26_3") ? "asBukkitMirror" : "asCraftMirror",
+            nms.getClass()
+        ).invoke(null, nms));
     }
 
     /**
